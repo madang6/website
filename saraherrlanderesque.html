@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll and Scale Photo Reel</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+    }
+    .background {
+        background-image: url('background/DSC01194.jpg'); /* Relative path to the background image */
+        background-size: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    .photo-reel {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .photo-reel img {
+        width: 150px;
+        height: auto;
+        margin: 0 10px;
+        cursor: pointer;
+        /* transition: transform 0.3s, width 0.3s, height 0.3s; Add width and height transition */
+    }
+</style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="photo-reel">
+        <img src="images/DSC03901_02.png" alt="Photo 1">
+        <img src="images/DSC03917.png" alt="Photo 2">
+        <img src="images/DSC03934_03.png" alt="Photo 3">
+        <!-- Add more images as needed -->
+    </div>
+
+<script>
+    const photoReel = document.querySelector('.photo-reel');
+    const images = photoReel.querySelectorAll('img');
+    // const reelWidth = photoReel.scrollWidth - photoReel.clientWidth;
+    // const imageCount = images.length;
+    // const imageWidth = images[0].offsetWidth;
+
+    // document.addEventListener('mousemove', function (e) {
+    //     const x = e.clientX / window.innerWidth;
+    //     const scrollAmount = x * reelWidth;
+
+    //     photoReel.scrollLeft = scrollAmount;
+    // });
+
+    // photoReel.addEventListener('mouseleave', function () {
+    //     // Reset scroll position
+    //     photoReel.scrollLeft = reelWidth / 2;
+    // });
+
+    document.addEventListener('mousemove', function (e) {
+        const y = (e.clientY / document.body.clientHeight);
+        const x = (e.clientX / document.body.clientWidth);
+
+        const scaleFactor = 2.0; // Adjust this value to control the maximum scale factor
+        const minScale = 0.3; // Minimum scale factor
+        const maxScale = 5.0; // Maximum scale factor
+
+        animationFrameId = requestAnimationFrame(() => {
+            images.forEach(img => {
+                const scale = minScale + (maxScale - minScale) * (1 - y) * scaleFactor;
+                const width = scale * 150; // Initial width is 150px
+                const speed = 10;
+                const dx = (x * speed) * -1;
+
+                img.style.width = `${width}px`;
+                img.style.height = 'auto'; // Maintain aspect ratio
+
+                img.style.transform = `translate(${dx}px,0})`;
+            });
+        });
+    });
+
+    photoReel.addEventListener('mouseleave', function () {
+        images.forEach(img => {
+            img.style.width = '150px'; // Reset width
+        });
+    });
+</script>
+</body>
+</html>

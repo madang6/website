@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Reel</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url('background/DSC01194.jpg'); /* Relative path to the background image */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #reel-container {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #reel {
+    display: flex;
+    /* transition: transform 0.3s ease; */
+  }
+  
+  .image {
+    width: 100px; /* Adjust width as needed */
+    height: auto;
+    margin: 0 10px;
+    /* transition: transform 0.3s ease; */
+  }
+</style>
+</head>
+<body>
+<div id="reel">
+    <img class="image" src="images/DSC03901_02.png" alt="Photo 1">
+    <img class="image" src="images/DSC03917.png" alt="Photo 2">
+    <img class="image" src="images/DSC03934_03.png" alt="Photo 3">
+   <!-- Add more images as needed -->
+</div>
+<script>
+    const reelContainer = document.getElementById('reel-container');
+    const reel = document.getElementById('reel');
+    const images = document.querySelectorAll('.image');
+  
+    function moveReel(event) {
+      const x = event.clientX;
+      const screenWidth = window.innerWidth;
+      const reelWidth = reelContainer.offsetWidth;
+  
+      const centerOffset = (reelWidth / 2) - (screenWidth / 2);
+      const newX = x - screenWidth / 2;
+  
+      const translation = newX / screenWidth * centerOffset;
+      reel.style.transform = `translateX(-${translation}px)`;
+    }
+  
+    document.addEventListener('mousemove', moveReel);
+</script>
+</body>
+</html>
